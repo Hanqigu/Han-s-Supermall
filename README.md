@@ -42,3 +42,8 @@ github常用命令记录:
     git commit -m '本次更新的注释'
 (4)提交到服务器:
     git push
+
+
+
+在vue3项目中，要想使用vue-router，必须使用如下命令:
+  npm install vue-router --save
