@@ -47,3 +47,8 @@ github常用命令记录:
 
 在vue3项目中，要想使用vue-router，必须使用如下命令:
   npm install vue-router --save
+
+
+
+导入axios库:
+  npm install axios --save
