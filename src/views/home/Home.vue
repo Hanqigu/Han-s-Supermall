@@ -4,24 +4,76 @@
     <home-swiper :banners="banners"></home-swiper>
     <recommend-view :recommends="recommends"></recommend-view>
     <feature-view></feature-view>
+    <tab-control class="tab-control" :titles="['流行', '新款', '精选']"></tab-control>
+
+    <ul>
+      <li>占据空格</li>
+      <li>占据空格</li>
+      <li>占据空格</li>
+      <li>占据空格</li>
+      <li>占据空格</li>
+      <li>占据空格</li>
+      <li>占据空格</li>
+      <li>占据空格</li>
+      <li>占据空格</li>
+      <li>占据空格</li>
+      <li>占据空格</li>
+      <li>占据空格</li>
+      <li>占据空格</li>
+      <li>占据空格</li>
+      <li>占据空格</li>
+      <li>占据空格</li>
+      <li>占据空格</li>
+      <li>占据空格</li>
+      <li>占据空格</li>
+      <li>占据空格</li>
+      <li>占据空格</li>
+      <li>占据空格</li>
+      <li>占据空格</li>
+      <li>占据空格</li>
+      <li>占据空格</li>
+      <li>占据空格</li>
+      <li>占据空格</li>
+      <li>占据空格</li>
+      <li>占据空格</li>
+      <li>占据空格</li>
+      <li>占据空格</li>
+      <li>占据空格</li>
+      <li>占据空格</li>
+      <li>占据空格</li>
+      <li>占据空格</li>
+      <li>占据空格</li>
+      <li>占据空格</li>
+      <li>占据空格</li>
+      <li>占据空格</li>
+      <li>占据空格</li>
+      <li>占据空格</li>
+      <li>占据空格</li>
+    </ul>
   </div>
 </template>
 
 <script>
-  import NavBar from 'components/common/navbar/NavBar';
+  // childComps
   import HomeSwiper from './childComps/HomeSwiper';
   import RecommendView from './childComps/RecommendView';
   import FeatureView from './childComps/FeatureView';
 
+  // components
+  import NavBar from 'components/common/navbar/NavBar';
+  import TabControl from 'components/content/tabControl/TabControl';
+
+  // network
   import {getHomeMultidata} from 'network/home';
 
   export default {
     name: 'Home',
     components: {
-      NavBar,
       HomeSwiper,
       RecommendView,
       FeatureView,
+      NavBar,
+      TabControl,
     },
     data() {
       return {
@@ -54,5 +106,10 @@
     right: 0;
     top: 0;
     z-index: 9;
+  }
+
+  .tab-control {
+    position: sticky;
+    top: 44px;
   }
 </style>
