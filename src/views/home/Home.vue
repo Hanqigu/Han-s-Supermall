@@ -64,7 +64,7 @@
   import TabControl from 'components/content/tabControl/TabControl';
 
   // network
-  import {getHomeMultidata} from 'network/home';
+  import {getHomeMultidata, getHomeGoods} from 'network/home';
 
   export default {
     name: 'Home',
@@ -88,11 +88,30 @@
     },
     created() {
       // 1.请求多个数据
-      getHomeMultidata().then(res => {
-        console.log(res);
-        this.banners = res.data.banner.list;
-        this.recommends = res.data.recommend.list;
-      });
+      this.methodsgetHomeMultidata();
+
+      // 2.请求商品数据
+      this.methodsgetHomeGoods('pop');
+      this.methodsgetHomeGoods('new');
+      this.methodsgetHomeGoods('sell');
+    },
+    methods: {
+      methodsgetHomeMultidata() {
+        getHomeMultidata().then(res => {
+          // console.log(res);
+          this.banners = res.data.banner.list;
+          this.recommends = res.data.recommend.list;
+        });
+      },
+      methodsgetHomeGoods(type) {
+        const page = this.goods[type].page+1;
+        getHomeGoods(type, page).then(res => {
+          // console.log(res);
+          // 将请求到的服务器res里的list数据push进数据结构goods
+          this.goods[type].list.push(...(res.data.list));
+          this.goods[type].page += 1;
+        });
+      },
     },
   }
 </script>
