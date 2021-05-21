@@ -26,6 +26,7 @@
     methods: {
       itemClick(index) {
         this.currenrIndex = index;
+        this.$emit('tabClick',index);
       },
     },
   }

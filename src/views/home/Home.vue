@@ -4,8 +4,10 @@
     <home-swiper :banners="banners"></home-swiper>
     <recommend-view :recommends="recommends"></recommend-view>
     <feature-view></feature-view>
-    <tab-control class="tab-control" :titles="['流行', '新款', '精选']"></tab-control>
-    <goods-list :goods="goods['pop'].list"></goods-list>
+    <tab-control class="tab-control"
+                  :titles="['流行', '新款', '精选']"
+                  @tabClick="HomeTabClick"></tab-control>
+    <goods-list :goods="showGoods"></goods-list>
 
     <ul>
       <li>占据空格</li>
@@ -87,7 +89,13 @@
           'new': {page: 0, list: []},
           'sell': {page: 0, list: []},
         },
+        currentType: 'pop',
       }
+    },
+    computed: {
+      showGoods() {
+        return this.goods[this.currentType].list
+      },
     },
     created() {
       // 1.请求多个数据
@@ -99,6 +107,27 @@
       this.methodsgetHomeGoods('sell');
     },
     methods: {
+      /**
+       * 事件监听相关的方法
+       */
+      HomeTabClick(index) {
+        // console.log(index);
+        switch(index) {
+          case 0:
+            this.currentType = 'pop';
+            break;
+          case 1:
+            this.currentType = 'new';
+            break;
+          case 2:
+            this.currentType = 'sell';
+            break;
+        };
+      },
+
+      /**
+       * 网络请求相关方法
+       */
       methodsgetHomeMultidata() {
         getHomeMultidata().then(res => {
           // console.log(res);
