@@ -21,6 +21,11 @@
 
       });
     },
+    methods: {
+      scrollTo(x, y, time = 1000) {
+        this.scroll.scrollTo(x, y, time);
+      }
+    },
   }
 </script>
 
