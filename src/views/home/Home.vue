@@ -1,6 +1,12 @@
 <template>
   <div id="home">
     <nav-bar class="home-nav"><div slot="center">购物街</div></nav-bar>
+    <!-- 用于偷天换日的tab-control，在视觉效果上让用户以为实现了吸顶的功能 -->
+    <tab-control :titles="['流行', '新款', '精选']"
+                 @tabClick="HomeTabClick"
+                 ref="tabControl1"
+                 class="tab-control"
+                 v-show="isTabFixed"></tab-control>
 
     <scroll class="content"
             ref="scroll"
@@ -8,12 +14,12 @@
             @emitscroll="contentScroll"
             :pull-up-load="true"
             @emitpullingUp="loadMore">
-      <home-swiper :banners="banners"></home-swiper>
+      <home-swiper :banners="banners" @emitSwiperImageLoad="swiperImageLoad"></home-swiper>
         <recommend-view :recommends="recommends"></recommend-view>
         <feature-view></feature-view>
-        <tab-control class="tab-control"
-                    :titles="['流行', '新款', '精选']"
-                    @tabClick="HomeTabClick"></tab-control>
+        <tab-control :titles="['流行', '新款', '精选']"
+                     @tabClick="HomeTabClick"
+                     ref="tabControl2"></tab-control>
         <goods-list :goods="showGoods"></goods-list>
     </scroll>
 
@@ -26,6 +32,9 @@
   import HomeSwiper from './childComps/HomeSwiper';
   import RecommendView from './childComps/RecommendView';
   import FeatureView from './childComps/FeatureView';
+
+  // common
+  import {debounce} from 'common/utils';
 
   // components
   import NavBar from 'components/common/navbar/NavBar';
@@ -59,7 +68,9 @@
           'sell': {page: 0, list: []},
         },
         currentType: 'pop',
-        isShowBackTop: false
+        isShowBackTop: false,
+        tabOffsetTop: 0,
+        isTabFixed: false,
       }
     },
     computed: {
@@ -78,13 +89,18 @@
     },
     mouted() {
       // 结合防抖动
-      const refresh = this.debounce(this.$refs.scroll.refresh, 500);
+      const refresh = debounce(this.$refs.scroll.refresh, 500);
 
-      // 3.监听GoodsListItem.vue文件中事件总线发射出的图片加载完成事件
+      // 1.监听GoodsListItem.vue文件中事件总线发射出的图片加载完成事件
       this.$bus.$on('itemImageLoad', () => {
         // console.log("事件总线示例");
         refresh();
       });
+
+      // 2.为tabOffsetTop赋值
+      // 所有组件都有一个属性$el:用于获取组件中的元素
+      this.tabOffsetTop = this.$refs.tabControl.$el.offsetTop;
+      console.log(this.$refs.tabControl.$el.offsetTop);
     },
     methods: {
       /**
@@ -103,11 +119,19 @@
             this.currentType = 'sell';
             break;
         };
+        this.$refs.tabControl1.currentIndex = index;
+        // console.log(this.$refs.tabControl1.currentType);
+        this.$refs.tabControl2.currentIndex = index;
+        // console.log(this.$refs.tabControl2.currentType);
       },
       backClick() {
         this.$refs.scroll.scrollTo(0, 0);
       },
       contentScroll(position) {
+        // 1.决定tabControl是否吸顶(position: fixed)
+        this.isTabFixed = (-position.y) > this.tabOffsetTop;
+
+        // 2.判断BackTop是否显示
         // console.log(position);
         this.isShowBackTop = position.y < -4900;
       },
@@ -117,17 +141,11 @@
         // 对界面进行刷新
         this.$refs.scroll.refresh();
       },
-      // 刷新频繁的防抖函数处理
-      debounce(func, delay = 500) {
-        let timer = null;
-        return function(...args) {
-          if(timer) {
-            clearTimeout(timer);
-            timer = setTimeout(() => {
-              func.apply(this, args);
-            }, delay);
-          }
-        };
+      swiperImageLoad() {
+        // 2.为tabOffsetTop赋值
+        // 所有组件都有一个属性$el:用于获取组件中的元素
+        this.tabOffsetTop = this.$refs.tabControl2.$el.offsetTop;
+        // console.log(this.$refs.tabControl.$el.offsetTop);
       },
 
       /**
@@ -148,7 +166,7 @@
           this.goods[type].list.push(...(res.data.list));
           this.goods[type].page += 1;
 
-          // 要想继续刷新更多页面，就必须有如下代码
+          // 要想继续刷新更多页面，就必须有如下代码，用来完成上拉加载工作
           this.$refs.scroll.finishPullUp();
         });
       },
@@ -158,7 +176,7 @@
 
 <style scoped>
   #home {
-    padding-top: 44px;
+    /* padding-top: 44px; */
     /* vh -> viewport height */
     height: 100vh;
     position: relative;
@@ -168,16 +186,22 @@
     background-color: var(--color-tint);
     color: #fff;
 
-    position: fixed;
+    /* position: fixed;
     left: 0;
     right: 0;
     top: 0;
-    z-index: 9;
+    z-index: 9; */
   }
 
-  .tab-control {
-    position: sticky;
+  /* .fixed {
+    position: fixed;
+    left: 0;
+    right: 0;
     top: 44px;
+  } */
+
+  .tab-control {
+    position: relative;
     z-index: 9;
   }
 
