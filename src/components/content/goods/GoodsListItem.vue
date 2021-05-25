@@ -1,6 +1,6 @@
 <template>
   <div class="goods-item">
-    <img :src="goodsItem.show.img" alt="">
+    <img :src="goodsItem.show.img" alt="" @load="imageLoad">
     <div class="goods-info">
       <p>{{goodsItem.title}}</p>
       <span class="price">{{goodsItem.price}}</span>
@@ -18,6 +18,13 @@ export default {
       default() {
         return {};
       },
+    },
+  },
+  methods: {
+    // 每加载完一个图片，就刷新一次，以此保证Better-Scroll插件的bug不会破坏用户体验
+    imageLoad() {
+      // 使用事件总线发射一个事件，其初始化是在main.js文件中实现的
+      this.$bus.$emit('itemImageLoad');
     },
   },
 }

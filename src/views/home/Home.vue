@@ -75,6 +75,12 @@
       this.methodsgetHomeGoods('pop');
       this.methodsgetHomeGoods('new');
       this.methodsgetHomeGoods('sell');
+
+      // 3.监听GoodsListItem.vue文件中事件总线发射出的图片加载完成事件
+      this.$bus.$on('itemImageLoad', () => {
+        // console.log("事件总线示例");
+        this.$refs.scroll.refresh();
+      });
     },
     methods: {
       /**
