@@ -2,7 +2,12 @@
   <div id="home">
     <nav-bar class="home-nav"><div slot="center">购物街</div></nav-bar>
 
-    <scroll class="content" ref="scroll" :probe-type="3" @emitscroll="contentScroll">
+    <scroll class="content"
+            ref="scroll"
+            :probe-type="3"
+            @emitscroll="contentScroll"
+            :pull-up-load="true"
+            @emitpullingUp="loadMore">
       <home-swiper :banners="banners"></home-swiper>
         <recommend-view :recommends="recommends"></recommend-view>
         <feature-view></feature-view>
@@ -96,6 +101,12 @@
         // console.log(position);
         this.isShowBackTop = position.y < -4900;
       },
+      loadMore() {
+        // console.log("上拉加载更多");
+        this.methodsgetHomeGoods(this.currentType);
+        // 对界面进行刷新
+        this.$refs.scroll.scroll.refresh();
+      },
 
       /**
        * 网络请求相关方法
@@ -108,12 +119,15 @@
         });
       },
       methodsgetHomeGoods(type) {
-        const page = this.goods[type].page+1;
-        getHomeGoods(type, page).then(res => {
+          const page = this.goods[type].page+1;
+          getHomeGoods(type, page).then(res => {
           // console.log(res);
           // 将请求到的服务器res里的list数据push进数据结构goods
           this.goods[type].list.push(...(res.data.list));
           this.goods[type].page += 1;
+
+          // 要想继续刷新更多页面，就必须有如下代码
+          this.$refs.scroll.finishPullUp();
         });
       },
     },

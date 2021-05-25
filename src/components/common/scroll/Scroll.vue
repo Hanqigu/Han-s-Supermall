@@ -13,8 +13,15 @@
     name: "Scroll",
     props: {
       // 让用户自己决定是否要实时监听滑动位置
-      probeType: Number,
-      default: 0,
+      probeType: {
+        type: Number,
+        default: 0,
+      },
+      // 让用户自己决定是否要上拉加载更多页面
+      pullUpLoad: {
+        type: Boolean,
+        default: false,
+      },
     },
     data() {
       return {
@@ -27,6 +34,7 @@
         click: true,
         // 要想实时监听滑动位置，就必须加probeType
         probeType: this.probeType,
+        pullUpLoad: this.pullUpLoad,
       });
 
       // 2.监听滚动的区域
@@ -34,11 +42,20 @@
         // console.log(position);
         this.$emit('emitscroll', position);
       });
+
+      // 3.监听上拉事件
+      this.scroll.on('pullingUp', () => {
+        // console.log("上拉加载更多");
+        this.$emit('emitpullingUp');
+      });
     },
     methods: {
       scrollTo(x, y, time = 1000) {
         this.scroll.scrollTo(x, y, time);
-      }
+      },
+      finishPullUp() {
+        this.scroll.finishPullUp();
+      },
     },
   }
 </script>
