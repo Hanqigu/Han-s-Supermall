@@ -77,10 +77,13 @@
       this.methodsgetHomeGoods('sell');
     },
     mouted() {
+      // 结合防抖动
+      const refresh = this.debounce(this.$refs.scroll.refresh, 500);
+
       // 3.监听GoodsListItem.vue文件中事件总线发射出的图片加载完成事件
       this.$bus.$on('itemImageLoad', () => {
         // console.log("事件总线示例");
-        this.$refs.scroll.refresh();
+        refresh();
       });
     },
     methods: {
@@ -113,6 +116,18 @@
         this.methodsgetHomeGoods(this.currentType);
         // 对界面进行刷新
         this.$refs.scroll.refresh();
+      },
+      // 刷新频繁的防抖函数处理
+      debounce(func, delay = 500) {
+        let timer = null;
+        return function(...args) {
+          if(timer) {
+            clearTimeout(timer);
+            timer = setTimeout(() => {
+              func.apply(this, args);
+            }, delay);
+          }
+        };
       },
 
       /**
