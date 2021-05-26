@@ -1,9 +1,11 @@
 <template>
   <div id="details">
-    <details-nav-bar></details-nav-bar>
-    <details-swiper :top-images="topImages"></details-swiper>
-    <details-base-info :goods="totalGoods"></details-base-info>
-    <details-shop-info :shop="totalShop"></details-shop-info>
+    <details-nav-bar class="details-nav"></details-nav-bar>
+    <scroll class="content">
+      <details-swiper :top-images="topImages"></details-swiper>
+      <details-base-info :goods="totalGoods"></details-base-info>
+      <details-shop-info :shop="totalShop"></details-shop-info>
+    </scroll>
   </div>
 </template>
 
@@ -13,7 +15,9 @@
   import DetailsBaseInfo from './childComps/DetailsBaseInfo';
   import DetailsShopInfo from './childComps/DetailsShopInfo';
 
-  import {getDetails, Goods, Shop} from 'network/details'
+  import Scroll from 'components/common/scroll/Scroll';
+
+  import {getDetails, Goods, Shop} from 'network/details';
 
   export default {
     name: "Details",
@@ -22,6 +26,7 @@
       DetailsSwiper,
       DetailsBaseInfo,
       DetailsShopInfo,
+      Scroll,
     },
     data() {
       return {
@@ -54,6 +59,28 @@
   }
 </script>
 
-<style>
+<style scoped>
+  #details {
+    position: relative;
+    z-index: 9;
+    background-color: #fff;
+    height: 100vh;
+  }
 
+  .details-nav {
+    position: relative;
+    z-index: 9;
+    background-color: #fff;
+  }
+
+  .content {
+    /* height: 100%; */
+    overflow: hidden;
+    /* margin-top: 44px; */
+    position: absolute;
+    top: 44px;
+    bottom: 49px;
+    left: 0;
+    right: 0;
+  }
 </style>
