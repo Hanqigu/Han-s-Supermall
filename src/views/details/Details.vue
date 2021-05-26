@@ -6,6 +6,7 @@
       <details-base-info :goods="totalGoods"></details-base-info>
       <details-shop-info :shop="totalShop"></details-shop-info>
       <details-goods-info :goodsInfo="totalDetailsInfo" @goodsInfoImgLoad="imageLoad"></details-goods-info>
+      <details-params-info :paramInfo="totalParamInfo"></details-params-info>
     </scroll>
   </div>
 </template>
@@ -16,10 +17,11 @@
   import DetailsBaseInfo from './childComps/DetailsBaseInfo';
   import DetailsShopInfo from './childComps/DetailsShopInfo';
   import DetailsGoodsInfo from './childComps/DetailsGoodsInfo';
+  import DetailsParamsInfo from './childComps/DetailsParamsInfo';
 
   import Scroll from 'components/common/scroll/Scroll';
 
-  import {getDetails, Goods, Shop} from 'network/details';
+  import {getDetails, Goods, Shop, GoodsParams} from 'network/details';
 
   export default {
     name: "Details",
@@ -29,6 +31,7 @@
       DetailsBaseInfo,
       DetailsShopInfo,
       DetailsGoodsInfo,
+      DetailsParamsInfo,
       Scroll,
     },
     data() {
@@ -38,6 +41,7 @@
         totalGoods: {},
         totalShop: {},
         totalDetailsInfo: {},
+        totalParamInfo: {},
       };
     },
     methods: {
@@ -52,7 +56,7 @@
 
       // 2.根据iid请求详情数据
       getDetails(this.iid).then(res => {
-        // console.log(res);
+        console.log(res);
         const resData = res.result;
 
         // (1)获取顶部的图片轮播数据
@@ -67,8 +71,8 @@
         // (4)获取商品详细信息
         this.totalDetailsInfo = resData.detailInfo;
 
-        // (5)保存参数信息
-        // this.totalParamInfo = new GoodsParam(resData.itemParams.info, resData.itemParams.rule);
+        // (5)获取参数信息
+        this.totalParamInfo = new GoodsParams(resData.itemParams.info, resData.itemParams.rule);
       });
     },
   }
