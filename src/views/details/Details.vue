@@ -1,10 +1,11 @@
 <template>
   <div id="details">
     <details-nav-bar class="details-nav"></details-nav-bar>
-    <scroll class="content">
+    <scroll class="content" ref="scroll">
       <details-swiper :top-images="topImages"></details-swiper>
       <details-base-info :goods="totalGoods"></details-base-info>
       <details-shop-info :shop="totalShop"></details-shop-info>
+      <details-goods-info :goodsInfo="totalDetailsInfo" @goodsInfoImgLoad="imageLoad"></details-goods-info>
     </scroll>
   </div>
 </template>
@@ -14,6 +15,7 @@
   import DetailsSwiper from './childComps/DetailsSwiper';
   import DetailsBaseInfo from './childComps/DetailsBaseInfo';
   import DetailsShopInfo from './childComps/DetailsShopInfo';
+  import DetailsGoodsInfo from './childComps/DetailsGoodsInfo';
 
   import Scroll from 'components/common/scroll/Scroll';
 
@@ -26,6 +28,7 @@
       DetailsSwiper,
       DetailsBaseInfo,
       DetailsShopInfo,
+      DetailsGoodsInfo,
       Scroll,
     },
     data() {
@@ -34,7 +37,13 @@
         topImages: [],
         totalGoods: {},
         totalShop: {},
+        totalDetailsInfo: {},
       };
+    },
+    methods: {
+      imageLoad() {
+        this.$refs.scroll.refresh();
+      },
     },
     created() {
       // 1.保存传入的iid
@@ -54,6 +63,12 @@
 
         // (3)创建店铺信息的对象
         this.totalShop = new Shop(resData.shopInfo);
+
+        // (4)获取商品详细信息
+        this.totalDetailsInfo = resData.detailInfo;
+
+        // (5)保存参数信息
+        // this.totalParamInfo = new GoodsParam(resData.itemParams.info, resData.itemParams.rule);
       });
     },
   }
