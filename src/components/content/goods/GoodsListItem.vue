@@ -28,7 +28,7 @@ export default {
     },
     goodsItemClick() {
       // console.log("goodsItemClick");
-      // 这里携带的iid是服务器里数据本身的id名称就叫iid，index.js和Details.vue里的id就是继承的这个iid的值
+      // 这里携带的iid是服务器里数据本身的id名称就叫iid，index.js和Details.vue里的iid就是继承的这个iid的值
       this.$router.push('/details/' + this.goodsItem.iid);
     },
   },
