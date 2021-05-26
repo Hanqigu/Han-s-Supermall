@@ -71,12 +71,25 @@
         isShowBackTop: false,
         tabOffsetTop: 0,
         isTabFixed: false,
+        saveY: 0,
       }
     },
     computed: {
       showGoods() {
         return this.goods[this.currentType].list
       },
+    },
+    destroyed() {
+      console.log("Home destroyed");
+    },
+    activated() {
+      this.$refs.scroll.scrollTo(0, this.saveY, 0);
+      // 这里之所以要刷新一次，是因为切换页面时回到home页面时有时候会莫名其妙的切换到首页顶部
+      this.$refs.scroll.refresh();
+    },
+    deactivated() {
+      console.log(this.$refs.scroll.getScrollY());
+      this.saveY = this.$refs.scroll.getScrollY();
     },
     created() {
       // 1.请求多个数据

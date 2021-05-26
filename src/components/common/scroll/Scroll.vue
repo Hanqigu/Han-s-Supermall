@@ -58,9 +58,12 @@
         this.scroll.finishPullUp();
       },
       refresh() {
-        console.log("----");
+        // console.log("----");
         this.scroll.refresh();
         // this.scroll && this.scroll.scrollTo && this.scroll.refresh();
+      },
+      getScrollY() {
+        return this.scroll ? this.scroll.y : 0;
       },
     },
   }
