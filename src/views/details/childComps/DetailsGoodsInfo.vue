@@ -18,31 +18,39 @@
 </template>
 
 <script>
-export default {
-  name: "DetailsGoodsInfo",
-  data() {
-    return {
-      imgLength: 0,
-    };
-  },
-  props: {
-    goodsInfo: {
-      type: Object,
-      default() {
-        return {};
+  export default {
+    name: "DetailsGoodsInfo",
+    components: {
+      Scroll
+    },
+    data() {
+      return {
+        counter: 0,
+        imageLength: 0,
+      };
+    },
+    props: {
+      goodsInfo: {
+        type: Object,
+        default() {
+          return {};
+        },
       },
     },
-  },
-  methods: {
-    goodsInfoImgLoad() {
-      // 判断，所有图片都加载完了，那么进行一次回调就可以了
-      this.imgLength++;
-      if (this.imgLength === this.goodsInfo.detailImage[0].list.length) {
-        this.$emit("goodsInfoImgLoad");
-      }
+    methods: {
+      goodsInfoImgLoad() {
+        // 判断，所有图片都加载完了，那么进行一次回调就可以了
+        if (++this.counter === this.imageLength) {
+          this.$emit("goodsInfoImgLoad");
+        }
+      },
     },
-  },
-};
+    watch: {
+      goodsInfo() {
+        this.imageLength = this.goodsInfo.detailImage[0].list.length;
+      },
+    },
+  };
 </script>
 <style scoped>
 .goods-info {
