@@ -1,5 +1,5 @@
 <template>
-  <div class="goods-item">
+  <div class="goods-item" @click="goodsItemClick">
     <img :src="goodsItem.show.img" alt="" @load="imageLoad">
     <div class="goods-info">
       <p>{{goodsItem.title}}</p>
@@ -25,6 +25,11 @@ export default {
     imageLoad() {
       // 使用事件总线发射一个事件，其初始化是在main.js文件中实现的
       this.$bus.$emit('itemImageLoad');
+    },
+    goodsItemClick() {
+      // console.log("goodsItemClick");
+      // 这里携带的iid是服务器里数据本身的id名称就叫iid，index.js和Details.vue里的id就是继承的这个iid的值
+      this.$router.push('/details/' + this.goodsItem.iid);
     },
   },
 }
