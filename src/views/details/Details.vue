@@ -1,12 +1,17 @@
 <template>
-  <div>
-    {{id}}
+  <div id="details">
+    <details-nav-bar></details-nav-bar>
   </div>
 </template>
 
 <script>
+  import DetailsNavBar from './childComps/DetailsNavBar'
+
   export default {
     name: "Details",
+    components: {
+      DetailsNavBar
+    },
     data() {
       return {
         id: null,
