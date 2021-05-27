@@ -239,7 +239,7 @@
   }
 </script>
 
-<style>
+<style scoped>
   .wrapper {
     height: 200px;
     /* background-color: skyblue; */

@@ -7,6 +7,7 @@
       <details-shop-info :shop="totalShop"></details-shop-info>
       <details-goods-info :goodsInfo="totalDetailsInfo" @goodsInfoImgLoad="imageLoad"></details-goods-info>
       <details-params-info :paramInfo="totalParamInfo"></details-params-info>
+      <details-comment-info :comment-info="totalCommentInfo"></details-comment-info>
     </scroll>
   </div>
 </template>
@@ -18,6 +19,7 @@
   import DetailsShopInfo from './childComps/DetailsShopInfo';
   import DetailsGoodsInfo from './childComps/DetailsGoodsInfo';
   import DetailsParamsInfo from './childComps/DetailsParamsInfo';
+  import DetailsCommentInfo from './childComps/DetailsCommentInfo';
 
   import Scroll from 'components/common/scroll/Scroll';
 
@@ -33,6 +35,7 @@
       DetailsShopInfo,
       DetailsGoodsInfo,
       DetailsParamsInfo,
+      DetailsCommentInfo,
     },
     data() {
       return {
@@ -42,6 +45,7 @@
         totalShop: {},
         totalDetailsInfo: {},
         totalParamInfo: {},
+        totalCommentInfo: {},
       };
     },
     methods: {
@@ -73,6 +77,11 @@
 
         // (5)获取详情信息
         this.totalParamInfo = new GoodsParams(resData.itemParams.info, resData.itemParams.rule);
+
+        // (6)获取评论信息
+        if(resData.rate.cRate !== 0) {
+          this.totalCommentInfo = resData.rate.list[0];
+        }
       });
     },
   }
