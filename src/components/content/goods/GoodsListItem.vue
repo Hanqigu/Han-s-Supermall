@@ -1,6 +1,6 @@
 <template>
   <div class="goods-item" @click="goodsItemClick">
-    <img :src="goodsItem.show.img" alt="" @load="imageLoad">
+    <img :src="showImage" alt="" @load="imageLoad">
     <div class="goods-info">
       <p>{{goodsItem.title}}</p>
       <span class="price">{{goodsItem.price}}</span>
@@ -20,6 +20,11 @@ export default {
       },
     },
   },
+  computed: {
+    showImage() {
+      return this.goodsItem.img || this.goodsItem.image || this.goodsItem.show.img;
+    },
+  },
   methods: {
     // 每加载完一个图片，就刷新一次，以此保证Better-Scroll插件的bug不会破坏用户体验
     imageLoad() {
@@ -35,7 +40,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
   .goods-item {
     padding-bottom: 40px;
     position: relative;

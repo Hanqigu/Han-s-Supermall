@@ -10,6 +10,12 @@ export function getDetails(iid) {
   });
 };
 
+export function getRecommend() {
+  return request({
+    url: '/recommend',
+  });
+};
+
 // 详情页的轮播图下面的各项数据整合成一个类
 export class Goods {
   constructor(itemInfo, columns, services) {
@@ -45,3 +51,5 @@ export class GoodsParams {
     this.sizes = rule.tables;
   }
 }
+
+
