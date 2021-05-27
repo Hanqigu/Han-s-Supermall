@@ -26,6 +26,7 @@
   import GoodsList from 'components/content/goods/GoodsList';
 
   import {getDetails, getRecommend, Goods, Shop, GoodsParams} from 'network/details';
+  import {itemListenerMixin} from 'common/mixin';
 
   export default {
     name: "Details",
@@ -40,6 +41,10 @@
       DetailsParamsInfo,
       DetailsCommentInfo,
     },
+    // 混入属性
+    mixins: [
+      itemListenerMixin
+    ],
     data() {
       return {
         iid: null,
@@ -91,8 +96,13 @@
       // 3.请求推荐数据
       getRecommend().then(res => {
         this.totalRecommends = res.data.list;
-        console.log(this.totalRecommends);
+        // console.log(this.totalRecommends);
       });
+    },
+    mounted() {},
+    destroyed() {
+      // 取消全局事件的监听
+      this.$bus.$off('itemImageLoad', this.detailsItemImgListener);
     },
   }
 </script>

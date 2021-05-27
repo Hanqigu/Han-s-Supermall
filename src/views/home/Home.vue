@@ -34,7 +34,7 @@
   import FeatureView from './childComps/FeatureView';
 
   // common
-  import {debounce} from 'common/utils';
+  import {itemListenerMixin} from 'common/mixin';
 
   // components
   import NavBar from 'components/common/navbar/NavBar';
@@ -58,6 +58,10 @@
       Scroll,
       BackTop,
     },
+    // 混入属性
+    mixins: [
+      itemListenerMixin
+    ],
     data() {
       return {
         banners: [],
@@ -88,8 +92,12 @@
       this.$refs.scroll.scrollTo(0, this.saveY, 0);
     },
     deactivated() {
+      // 1.保存Y值
       // console.log(this.$refs.scroll.getScrollY());
       this.saveY = this.$refs.scroll.getScrollY();
+
+      // 2.取消全局事件的监听
+      this.$bus.$off('itemImageLoad', this.homeItemImgListener);
     },
     created() {
       // 1.请求多个数据
@@ -101,16 +109,7 @@
       this.methodsgetHomeGoods('sell');
     },
     mouted() {
-      // 结合防抖动
-      const refresh = debounce(this.$refs.scroll.refresh, 500);
-
-      // 1.监听GoodsListItem.vue文件中事件总线发射出的图片加载完成事件
-      this.$bus.$on('itemImageLoad', () => {
-        // console.log("事件总线示例");
-        refresh();
-      });
-
-      // 2.为tabOffsetTop赋值
+      // 为tabOffsetTop赋值
       // 所有组件都有一个属性$el:用于获取组件中的元素
       this.tabOffsetTop = this.$refs.tabControl.$el.offsetTop;
       // console.log(this.$refs.tabControl.$el.offsetTop);
