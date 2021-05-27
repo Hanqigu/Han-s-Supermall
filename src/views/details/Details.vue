@@ -26,13 +26,13 @@
   export default {
     name: "Details",
     components: {
+      Scroll,
       DetailsNavBar,
       DetailsSwiper,
       DetailsBaseInfo,
       DetailsShopInfo,
       DetailsGoodsInfo,
       DetailsParamsInfo,
-      Scroll,
     },
     data() {
       return {
@@ -71,7 +71,7 @@
         // (4)获取商品详细信息
         this.totalDetailsInfo = resData.detailInfo;
 
-        // (5)获取参数信息
+        // (5)获取详情信息
         this.totalParamInfo = new GoodsParams(resData.itemParams.info, resData.itemParams.rule);
       });
     },

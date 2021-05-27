@@ -20,9 +20,6 @@
 <script>
   export default {
     name: "DetailsGoodsInfo",
-    components: {
-      Scroll
-    },
     data() {
       return {
         counter: 0,
