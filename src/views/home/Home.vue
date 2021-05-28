@@ -34,14 +34,13 @@
   import FeatureView from './childComps/FeatureView';
 
   // common
-  import {itemListenerMixin} from 'common/mixin';
+  import {itemListenerMixin, backTopMixin} from 'common/mixin';
 
   // components
   import NavBar from 'components/common/navbar/NavBar';
   import TabControl from 'components/content/tabControl/TabControl';
   import GoodsList from 'components/content/goods/GoodsList';
   import Scroll from 'components/common/scroll/Scroll';
-  import BackTop from 'components/content/backTop/BackTop';
 
   // network
   import {getHomeMultidata, getHomeGoods} from 'network/home';
@@ -56,11 +55,11 @@
       TabControl,
       GoodsList,
       Scroll,
-      BackTop,
     },
     // 混入属性
     mixins: [
-      itemListenerMixin
+      itemListenerMixin,
+      backTopMixin,
     ],
     data() {
       return {
@@ -72,7 +71,6 @@
           'sell': {page: 0, list: []},
         },
         currentType: 'pop',
-        isShowBackTop: false,
         tabOffsetTop: 0,
         isTabFixed: false,
         saveY: 0,
@@ -136,16 +134,13 @@
         this.$refs.tabControl2.currentIndex = index;
         // console.log(this.$refs.tabControl2.currentType);
       },
-      backClick() {
-        this.$refs.scroll.scrollTo(0, 0);
-      },
       contentScroll(position) {
         // 1.决定tabControl是否吸顶(position: fixed)
         this.isTabFixed = (-position.y) > this.tabOffsetTop;
 
         // 2.判断BackTop是否显示
         // console.log(position);
-        this.isShowBackTop = position.y < -4900;
+        this.isShowBackTop = position.y < -1500;
       },
       loadMore() {
         // console.log("上拉加载更多");
