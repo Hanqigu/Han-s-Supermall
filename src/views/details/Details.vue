@@ -1,7 +1,10 @@
 <template>
   <div id="details">
-    <details-nav-bar class="details-nav" @detailsTitleClick="titleClick"></details-nav-bar>
-    <scroll class="content" ref="scroll">
+    <details-nav-bar class="details-nav" @detailsTitleClick="titleClick" ref="nav"></details-nav-bar>
+    <scroll class="content"
+            ref="scroll"
+            :probe-type="3"
+            @emitscroll="contentcroll">
       <details-swiper :top-images="topImages"></details-swiper>
       <details-base-info :goods="totalGoods"></details-base-info>
       <details-shop-info :shop="totalShop"></details-shop-info>
@@ -56,6 +59,7 @@
         totalCommentInfo: {},
         totalRecommends: [],
         themeTopYs: [],
+        currentIndex: null,
       };
     },
     methods: {
@@ -73,6 +77,23 @@
       titleClick(index) {
         // console.log(index);
         this.$refs.scroll.scrollTo(0, -this.themeTopYs[index], 300);
+      },
+      contentcroll(position) {
+        // console.log(position);
+        // 1.获取y值
+        const positionY = -position.y;
+
+        // 2.positionY和主题中值进行对比
+        let length = this.themeTopYs.length;
+        for(let i = 0; i < length; i++) {
+          if(this.currentIndex !== i
+          && ((i< length - 1 && positionY >= this.themeTopYs[i] && positionY < this.themeTopYs[i+1])
+          || (i === length - 1 && positionY >= this.themeTopYs[i]))) {
+            this.currentIndex = i;
+            // console.log(this.currentIndex);
+            this.$refs.nav.currentIndex = this.currentIndex
+          }
+        }
       },
     },
     created() {
