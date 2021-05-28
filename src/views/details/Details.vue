@@ -1,14 +1,14 @@
 <template>
   <div id="details">
-    <details-nav-bar class="details-nav"></details-nav-bar>
+    <details-nav-bar class="details-nav" @detailsTitleClick="titleClick"></details-nav-bar>
     <scroll class="content" ref="scroll">
       <details-swiper :top-images="topImages"></details-swiper>
       <details-base-info :goods="totalGoods"></details-base-info>
       <details-shop-info :shop="totalShop"></details-shop-info>
       <details-goods-info :goodsInfo="totalDetailsInfo" @goodsInfoImgLoad="imageLoad"></details-goods-info>
-      <details-params-info :paramInfo="totalParamInfo"></details-params-info>
-      <details-comment-info :comment-info="totalCommentInfo"></details-comment-info>
-      <goods-list :goods="totalRecommends"></goods-list>
+      <details-params-info ref="params" :paramInfo="totalParamInfo"></details-params-info>
+      <details-comment-info ref="comment" :comment-info="totalCommentInfo"></details-comment-info>
+      <goods-list ref="recommend" :goods="totalRecommends"></goods-list>
     </scroll>
   </div>
 </template>
@@ -55,11 +55,24 @@
         totalParamInfo: {},
         totalCommentInfo: {},
         totalRecommends: [],
+        themeTopYs: [],
       };
     },
     methods: {
       imageLoad() {
+        // console.log("----");
         this.$refs.scroll.refresh();
+
+        this.themeTopYs = [];
+        this.themeTopYs.push(0);
+        this.themeTopYs.push(this.$refs.params.$el.offsetTop);
+        this.themeTopYs.push(this.$refs.comment.$el.offsetTop);
+        this.themeTopYs.push(this.$refs.recommend.$el.offsetTop);
+        console.log(this.themeTopYs);
+      },
+      titleClick(index) {
+        // console.log(index);
+        this.$refs.scroll.scrollTo(0, -this.themeTopYs[index], 300);
       },
     },
     created() {
@@ -91,6 +104,30 @@
         if(resData.rate.cRate !== 0) {
           this.totalCommentInfo = resData.rate.list[0];
         }
+
+        // (7)使用$nextTick函数的作用是等到html所有组件全部渲染完成才调用其内部的回调函数
+        // 第1次获取:值不对
+        // 值不对的原因:this.$refs.XXXX.$el压根没有渲染
+        // this.themeTopYs = [];
+        // this.themeTopYs.push(0);
+        // this.themeTopYs.push(this.$refs.params.$el.offsetTop);
+        // this.themeTopYs.push(this.$refs.comment.$el.offsetTop);
+        // this.themeTopYs.push(this.$refs.recommend.$el.offsetTop);
+        // console.log(this.themeTopYs);
+
+        // 第2次获取:值不对
+        // 值不对的原因:图片没有计算在内(没有加载完成)
+        this.$nextTick(() => {
+          // 根据最新的数据，对应的DOM是已经被渲染出来
+          // 但是图片依然是没有加载完全(目前获取的offsetTop不包含图片)
+          // offsetTop值不对时，一般都是图片没有获取到的问题
+          // this.themeTopYs = [];
+          // this.themeTopYs.push(0);
+          // this.themeTopYs.push(this.$refs.params.$el.offsetTop);
+          // this.themeTopYs.push(this.$refs.comment.$el.offsetTop);
+          // this.themeTopYs.push(this.$refs.recommend.$el.offsetTop);
+          // console.log(this.themeTopYs);
+        });
       });
 
       // 3.请求推荐数据
@@ -100,6 +137,17 @@
       });
     },
     mounted() {},
+    // 只要有数据更新就会调用updated里面的代码
+    updated() {
+      // this.themeTopYs = [];
+
+      // this.themeTopYs.push(0);
+      // this.themeTopYs.push(this.$refs.params.$el.offsetTop);
+      // this.themeTopYs.push(this.$refs.comment.$el.offsetTop);
+      // this.themeTopYs.push(this.$refs.recommend.$el.offsetTop);
+
+      // console.log(this.themeTopYs);
+    },
     destroyed() {
       // 取消全局事件的监听
       this.$bus.$off('itemImageLoad', this.detailsItemImgListener);
