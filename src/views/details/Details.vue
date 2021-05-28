@@ -13,7 +13,7 @@
       <details-comment-info ref="comment" :comment-info="totalCommentInfo"></details-comment-info>
       <goods-list ref="recommend" :goods="totalRecommends"></goods-list>
     </scroll>
-    <details-bottom-bar></details-bottom-bar>
+    <details-bottom-bar @addCart="addToCart"></details-bottom-bar>
     <back-top @click.native="backClick" v-show="isShowBackTop"></back-top>
   </div>
 </template>
@@ -103,6 +103,17 @@
         // 3.判断BackTop是否显示
         // console.log(position);
         this.isShowBackTop = position.y < -1500;
+      },
+      addToCart() {
+        // console.log("Details addToCart");
+        // 1.获取购物车需要展示的信息
+        const product = {};
+        product.iamge = this.topImages[0];
+        product.title = this.totalGoods.title;
+        product.desc = this.totalGoods.desc;
+        product.price = this.totalGoods.realPrice;
+        product.iid = this.iid;
+        console.log(product);
       },
     },
     created() {
