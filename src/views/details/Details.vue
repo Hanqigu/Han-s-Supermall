@@ -13,6 +13,7 @@
       <details-comment-info ref="comment" :comment-info="totalCommentInfo"></details-comment-info>
       <goods-list ref="recommend" :goods="totalRecommends"></goods-list>
     </scroll>
+    <details-bottom-bar></details-bottom-bar>
   </div>
 </template>
 
@@ -24,6 +25,7 @@
   import DetailsGoodsInfo from './childComps/DetailsGoodsInfo';
   import DetailsParamsInfo from './childComps/DetailsParamsInfo';
   import DetailsCommentInfo from './childComps/DetailsCommentInfo';
+  import DetailsBottomBar from './childComps/DetailsBottomBar';
 
   import Scroll from 'components/common/scroll/Scroll';
   import GoodsList from 'components/content/goods/GoodsList';
@@ -43,6 +45,7 @@
       DetailsGoodsInfo,
       DetailsParamsInfo,
       DetailsCommentInfo,
+      DetailsBottomBar,
     },
     // 混入属性
     mixins: [
