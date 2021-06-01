@@ -6,7 +6,7 @@
     </nav-bar>
 
     <!-- 商品列表 -->
-    <scroll class="content">
+    <scroll class="content" ref="scroll">
       <cart-list></cart-list>
     </scroll>
 
@@ -36,6 +36,9 @@
       ...mapGetters({
         length: 'cartLength',
       }),
+    },
+    activated() {
+      this.$refs.scroll.refresh();
     },
   }
 </script>
