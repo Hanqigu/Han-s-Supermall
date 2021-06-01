@@ -1,13 +1,36 @@
 <template>
-  <h1>购物车</h1>
+  <div class="cart">
+    <nav-bar class="nav-bar">
+      <div slot="center">购物车({{length}})</div>
+    </nav-bar>
+  </div>
 </template>
 
 <script>
-export default {
-  name: 'Cart',
-}
+  import NavBar from 'components/common/navbar/NavBar';
+
+  import {mapGetters} from 'vuex';
+
+  export default {
+    name: 'Cart',
+    components: {
+      NavBar,
+    },
+    computed: {
+      // 辅助函数仅仅是将store中的getter映射到局部计算属性
+      // 两种语法
+      // ...mapGetters(['cartLength', 'cartList',]),
+      ...mapGetters({
+        length: 'cartLength',
+        list: 'cartList',
+      }),
+    },
+  }
 </script>
 
-<style>
-
+<style scoped>
+  .nav-bar {
+    background-color: var(--color-tint);
+    color: #fff;
+  }
 </style>
