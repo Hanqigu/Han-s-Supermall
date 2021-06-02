@@ -1,7 +1,7 @@
 <template>
   <div class="bottom-bar">
     <div class="check-content">
-      <check-button class="check-button"></check-button>
+      <check-button :is-checked="isSelectAll" class="check-button"></check-button>
       <span>全选</span>
     </div>
 
@@ -43,7 +43,14 @@
         return this.list.filter(item => item.checked).reduce((preValue, item) => {
           return preValue + item.count;
         }, 0);
-      }
+      },
+      isSelectAll() {
+        // return !(this.list.filter(item => !item.checked).length);
+        // return !(this.list.find(item => !item.checked));
+
+        // 这里用every()方法是最好的，不会遍历空数组
+        return !!this.list.length && this.list.every(item => item.checked);
+      },
     },
   }
 </script>
