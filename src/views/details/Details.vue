@@ -33,6 +33,7 @@
 
   import {getDetails, getRecommend, Goods, Shop, GoodsParams} from 'network/details';
   import {itemListenerMixin, backTopMixin} from 'common/mixin';
+  import {mapActions} from 'vuex';
 
   export default {
     name: "Details",
@@ -68,6 +69,9 @@
       };
     },
     methods: {
+      ...mapActions({
+        addCartActions: "addCart",
+      }),
       imageLoad() {
         // console.log("----");
         this.$refs.scroll.refresh();
@@ -118,7 +122,15 @@
         // 2.将商品添加到购物车里
         // this.$store.cartList.push();
         // this.$store.commit('addCart', product);
-        this.$store.dispatch('addCart', product);
+        // this.$store.dispatch('addCart', product).then(res => {
+        //   console.log(res);
+        // });
+        // 当使用了mapactions后，将actions.js里的方法映射到该组件中，即可简化书写
+        this.addCartActions(product).then(res => {
+          console.log(res);
+        });
+
+        // 3.添加到购物车成功
       },
     },
     created() {

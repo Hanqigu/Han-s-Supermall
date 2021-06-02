@@ -5,7 +5,8 @@ import {
 
 export default {
   addCart(context, payload) {
-    // 1.添加商品(顺便要查找之前数组中是否有该商品)
+    return new Promise((resolve, reject) => {
+      // 1.添加商品(顺便要查找之前数组中是否有该商品)
     // let oldProduct = null;
     // for(let item of state.cartList) {
     //   if(item.iid === payload.iid) {
@@ -18,9 +19,12 @@ export default {
     // 2.判断oldProduct
     if(oldProduct) {
       context.commit(ADD_COUNTER, oldProduct);
+      resolve("当前商品数量+1");
     } else {
       payload.count = 1;
       context.commit(ADD_TO_CART, payload);
+      resolve("添加了新的商品");
     }
+    });
   },
 };
