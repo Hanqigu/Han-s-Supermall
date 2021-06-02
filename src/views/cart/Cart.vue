@@ -11,6 +11,7 @@
     </scroll>
 
     <!-- 底部汇总 -->
+    <cart-bottom-bar></cart-bottom-bar>
   </div>
 </template>
 
@@ -19,6 +20,7 @@
   import Scroll from 'components/common/scroll/Scroll';
 
   import CartList from './childComps/CartList';
+  import CartBottomBar from './childComps/CartBottomBar';
 
   import {mapGetters} from 'vuex';
 
@@ -28,6 +30,7 @@
       NavBar,
       Scroll,
       CartList,
+      CartBottomBar,
     },
     computed: {
       // 辅助函数仅仅是将store中的getter映射到局部计算属性
