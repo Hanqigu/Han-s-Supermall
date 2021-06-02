@@ -1,7 +1,9 @@
 <template>
   <div class="bottom-bar">
     <div class="check-content">
-      <check-button :is-checked="isSelectAll" class="check-button"></check-button>
+      <check-button :is-checked="isSelectAll"
+                    class="check-button"
+                    @click.native="checkClick"></check-button>
       <span>全选</span>
     </div>
 
@@ -50,6 +52,16 @@
 
         // 这里用every()方法是最好的，不会遍历空数组
         return !!this.list.length && this.list.every(item => item.checked);
+      },
+    },
+    methods: {
+      checkClick() {
+        if(this.isSelectAll) {
+          // 全部选中 -> 全部不选
+          this.list.forEach(item => item.checked = false);
+        } else {
+          this.list.forEach(item => item.checked = true);
+        }
       },
     },
   }
