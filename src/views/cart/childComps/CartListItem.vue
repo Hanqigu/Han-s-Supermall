@@ -1,7 +1,7 @@
 <template>
   <div id="shop-item">
     <div class="item-selector">
-      <CheckButton></CheckButton>
+      <CheckButton :is-checked="itemInfo.checked" @click.native="checkClick"></CheckButton>
     </div>
     <div class="item-img">
       <img :src="itemInfo.iamge" alt="商品图片">
@@ -32,6 +32,11 @@
           return {};
         },
       },
+    },
+    methods: {
+      checkClick() {
+        this.itemInfo.checked = !this.itemInfo.checked;
+      }
     },
   }
 </script>
