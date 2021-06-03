@@ -15,6 +15,7 @@
     </scroll>
     <details-bottom-bar @addCart="addToCart"></details-bottom-bar>
     <back-top @click.native="backClick" v-show="isShowBackTop"></back-top>
+    <!-- <toast :message="message" :show="detailShow"></toast> -->
   </div>
 </template>
 
@@ -30,6 +31,7 @@
 
   import Scroll from 'components/common/scroll/Scroll';
   import GoodsList from 'components/content/goods/GoodsList';
+  // import Toast from 'components/common/toast/Toast';
 
   import {getDetails, getRecommend, Goods, Shop, GoodsParams} from 'network/details';
   import {itemListenerMixin, backTopMixin} from 'common/mixin';
@@ -39,6 +41,7 @@
     name: "Details",
     components: {
       Scroll,
+      // Toast,
       GoodsList,
       DetailsNavBar,
       DetailsSwiper,
@@ -66,6 +69,8 @@
         totalRecommends: [],
         themeTopYs: [],
         currentIndex: null,
+        // message: '',
+        // detailShow: false,
       };
     },
     methods: {
@@ -117,7 +122,7 @@
         product.desc = this.totalGoods.desc;
         product.price = this.totalGoods.realPrice;
         product.iid = this.iid;
-        console.log(product);
+        // console.log(product);
 
         // 2.将商品添加到购物车里
         // this.$store.cartList.push();
@@ -127,7 +132,15 @@
         // });
         // 当使用了mapactions后，将actions.js里的方法映射到该组件中，即可简化书写
         this.addCartActions(product).then(res => {
-          console.log(res);
+          // this.detailShow = true;
+          // this.message = res;
+
+          // setTimeout(() => {
+          //   this.detailShow = false;
+          //   this.message = '';
+          // }, 1500);
+
+          this.$toast.show(res);
         });
 
         // 3.添加到购物车成功
