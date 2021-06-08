@@ -57,3 +57,8 @@ github常用命令记录:
 
 使用图片懒加载插件:
   npm install vue-lazyload --save
+
+
+
+px2vw-css单位转化插件:
+  npm install postcss-px-to-viewport --save-dev
