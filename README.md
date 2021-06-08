@@ -62,3 +62,10 @@ github常用命令记录:
 
 px2vw-css单位转化插件:
   npm install postcss-px-to-viewport --save-dev
+
+
+
+主机 -> 操作系统 -> Windows(.net)/Linux -> tomcat/nginx(软件/反向代理)
+步骤:
+  (1)将自己的电脑作为服务器 -> Windows -> nginx
+  (2)远程部署(Mac)
