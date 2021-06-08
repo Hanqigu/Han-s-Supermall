@@ -52,3 +52,8 @@ github常用命令记录:
 
 导入axios库:
   npm install axios --save
+
+
+
+使用图片懒加载插件:
+  npm install vue-lazyload --save
